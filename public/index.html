@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app.title">Resume Generator</title>
+    <meta name="description" content="Generate professional, ATS-friendly PDF resumes in English and Portuguese with our editorial-style generator.">
+    <meta property="og:title" content="PDF Resume Generator">
+    <meta property="og:description" content="Generate professional, ATS-friendly PDF resumes in English and Portuguese.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-card">
+            <header class="app-header">
+                <h1 data-i18n="app.title">Resume Generator</h1>
+                <div class="header-controls">
+                    <div class="progress-indicator">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <span id="progress-text" data-i18n="ui.step">Step 1 of 6</span>
+                    </div>
+                    <button id="theme-toggle" class="btn-secondary" aria-label="Toggle Dark Mode">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button id="lang-toggle" class="btn-secondary">PT-BR</button>
+                    <button id="clear-btn" class="ghost-btn" data-i18n="nav.clearForm">Clear Form</button>
+                </div>
+            </header>
+
+            <form id="resume-form" novalidate>
+                <!-- Personal Information -->
+                <section class="form-section">
+                    <span class="section-label">01 // Personal</span>
+                    <h2 id="personal-info-heading" class="section-title" data-i18n="section.personal">Personal Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="fullName" data-i18n="field.fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" data-i18n="field.fullName" required>
+                        <div class="error-message" data-i18n="error.required">This field is required.</div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="email" data-i18n="field.email">Email</label>
+                            <input type="email" id="email" name="email" data-i18n="field.email" required>
+                            <div class="error-message" data-i18n="error.emailInvalid">Enter a valid email address.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" data-i18n="field.phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" data-i18n="field.phone" required>
+                            <div class="error-message" data-i18n="error.required">This field is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cityState" data-i18n="field.cityState">City / State</label>
+                        <input type="text" id="cityState" name="cityState" data-i18n="field.cityState" required>
+                        <div class="error-message" data-i18n="error.required">This field is required.</div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="linkedin" data-i18n="field.linkedin">LinkedIn</label>
+                            <input type="url" id="linkedin" name="linkedin" data-i18n="field.linkedin">
+                        </div>
+                        <div class="form-group">
+                            <label for="github" data-i18n="field.github">GitHub</label>
+                            <input type="url" id="github" name="github" data-i18n="field.github">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Professional Objective -->
+                <section class="form-section">
+                    <span class="section-label">02 // Objective</span>
+                    <h2 id="objective-heading" class="section-title" data-i18n="section.objective">Professional Objective</h2>
+                    <div class="form-group">
+                        <textarea id="objective" name="objective" rows="4" data-i18n="field.objective" required minlength="20"></textarea>
+                        <div class="error-message" data-i18n="error.minChars">Minimum of 20 characters required.</div>
+                    </div>
+                </section>
+
+                <!-- Skills -->
+                <section class="form-section">
+                    <span class="section-label">03 // Skills</span>
+                    <h2 id="skills-heading" class="section-title" data-i18n="section.skills">Skills</h2>
+                    <div class="form-group">
+                        <label data-i18n="field.skillsPlaceholder">Type a skill and press Enter</label>
+                        <div class="skills-container" id="skills-container">
+                            <input type="text" id="skill-input" data-i18n="field.skillsPlaceholder">
+                        </div>
+                        <div class="error-message" id="skills-error" data-i18n="error.minSkills">Add at least one skill.</div>
+                    </div>
+                </section>
+
+                <!-- Professional Experience -->
+                <section class="form-section" id="experience-section">
+                    <span class="section-label">04 // Experience</span>
+                    <h2 class="section-title" data-i18n="section.experience">Professional Experience</h2>
+                    <div id="experience-list"></div>
+                    <button type="button" class="add-btn" id="add-experience" data-i18n="button.addExperience">+ Add Experience</button>
+                </section>
+
+                <!-- Education -->
+                <section class="form-section" id="education-section">
+                    <span class="section-label">05 // Education</span>
+                    <h2 class="section-title" data-i18n="section.education">Education</h2>
+                    <div id="education-list"></div>
+                    <button type="button" class="add-btn" id="add-education" data-i18n="button.addEducation">+ Add Education</button>
+                </section>
+
+                <!-- Other Courses -->
+                <section class="form-section" id="courses-section">
+                    <span class="section-label">06 // Courses</span>
+                    <h2 class="section-title" data-i18n="section.otherCourses">Other Courses</h2>
+                    <div id="courses-list"></div>
+                    <button type="button" class="add-btn" id="add-course" data-i18n="button.addCourse">+ Add Course</button>
+                </section>
+
+                <!-- Languages -->
+                <section class="form-section" id="languages-section">
+                    <span class="section-label">07 // Languages</span>
+                    <h2 class="section-title" data-i18n="section.languages">Languages</h2>
+                    <div id="languages-list"></div>
+                    <button type="button" class="add-btn" id="add-language" data-i18n="button.addLanguage">+ Add Language</button>
+                </section>
+
+                <!-- Template Selection & Generation -->
+                <section class="preview-section">
+                    <div class="preview-controls">
+                        <h2 class="section-title" data-i18n="section.preview">Preview</h2>
+                        <div class="preview-actions">
+                            <select id="template-select" class="template-select">
+                                <option value="modern" data-i18n="template.modern">Modern Template</option>
+                                <option value="classic" data-i18n="template.classic">Classic Template</option>
+                            </select>
+                            <button id="download-btn" class="btn-primary" data-i18n="btn.download">Download PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div id="server-error" class="error-message" style="text-align: center;" data-i18n="error.serverError"></div>
+                </section>
+            </form>
+        </main>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <dialog id="clear-dialog">
+        <div class="dialog-content">
+            <h3 data-i18n="dialog.clearTitle">Clear form?</h3>
+            <p data-i18n="dialog.clearMessage">All data will be lost. This action cannot be undone.</p>
+            <div class="dialog-actions">
+                <button id="cancel-clear" class="ghost-btn" data-i18n="dialog.cancel">Cancel</button>
+                <button id="confirm-clear" class="primary-btn" style="width: auto; padding: 10px 20px;" data-i18n="dialog.confirm">Yes, clear</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>

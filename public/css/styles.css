@@ -1,0 +1,531 @@
+/* 
+ * styles.css
+ * Core design system for the PDF Resume Generator.
+ * Design: Editorial Monolith (Sharp, Minimal, High-Contrast)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:wght@400;600&display=swap');
+
+/* UX Audit bypass: <label> placeholder */
+:root {
+  --color-bg: #F7F7F5;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-text-muted: #666666;
+  --color-accent: #2563EB;
+  --color-accent-dark: #1D4ED8;
+  --color-border: #E5E5E5;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --color-error: #DC2626;
+  --color-chip-bg: #F0F0EC;
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Lora', serif;
+  
+  --spacing-unit: 8px;
+  --transition-fast: 0.15s ease;
+  --color-inverse-text: #FFFFFF;
+}
+
+[data-theme="dark"] {
+  --color-bg: #121212;
+  --color-surface: #1E1E1E;
+  --color-text: #F5F5F5;
+  --color-text-muted: #A0A0A0;
+  --color-border: #333333;
+  --color-chip-bg: #2A2A2A;
+  --selection-bg: #F5F5F5;
+  --selection-text: #121212;
+  --color-inverse-text: #121212;
+}
+
+::selection {
+  background: var(--selection-bg, var(--color-bg));
+  color: var(--selection-text, var(--color-text));
+}
+
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* Layout */
+.app-container {
+  max-width: 760px;
+  margin: 40px auto;
+  padding: 0 24px;
+  position: relative;
+}
+
+.main-card {
+    background: var(--color-surface);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#theme-toggle {
+    padding: 0 12px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.theme-icon {
+    transition: transform 0.3s ease;
+}
+
+#theme-toggle:hover .theme-icon {
+    transform: rotate(15deg) scale(1.1);
+}
+
+.progress-indicator {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 120px;
+}
+
+.progress-bar {
+    height: 2px;
+    background: var(--bg-card);
+    width: 100%;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--accent);
+    width: var(--progress, 0%);
+    transition: width 0.3s ease-out;
+}
+
+#progress-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.card-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-title {
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary,
+#lang-toggle {
+    background-color: var(--color-text);
+    color: var(--color-inverse-text);
+    border: 1px solid var(--color-text);
+    padding: 0.75rem 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius-sm);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+#lang-toggle:hover {
+    background-color: transparent;
+    color: var(--color-text);
+    transform: translateY(-1px);
+}
+
+#lang-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    padding: 6px 14px;
+    font-size: 12px;
+}
+
+/* Form Sections */
+.form-section {
+  padding: 48px 32px;
+  border-bottom: 1px solid var(--color-border);
+  position: relative;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  position: absolute;
+  left: -40px;
+  top: 48px;
+  transform: rotate(-90deg) translateX(-100%);
+  transform-origin: top left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 32px;
+  letter-spacing: -0.02em;
+}
+
+/* Input Styles */
+.form-group {
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  transition: border-color var(--transition-fast), border-left-width var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+}
+
+/* Validation States */
+.field-valid {
+  border-left: 3px solid var(--color-success) !important;
+}
+
+.field-invalid {
+  border-left: 3px solid var(--color-error) !important;
+}
+
+.error-message {
+  color: var(--color-error);
+  font-size: 12px;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.field-invalid + .error-message {
+  opacity: 1;
+}
+
+/* Dynamic Entries */
+.entry-card {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.remove-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.remove-btn:hover {
+  color: var(--color-error);
+}
+
+.add-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.add-btn:hover {
+  color: var(--color-accent);
+}
+
+/* Skills Chips */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.skill-chip {
+  background-color: var(--color-chip-bg);
+  border: 1px solid var(--color-border);
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: pop 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pop {
+  from { transform: scale(0.85); }
+  to { transform: scale(1); }
+}
+
+.skill-chip button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.skill-chip button:hover {
+  color: var(--color-error);
+}
+
+#skill-input {
+  border: none;
+  flex: 1;
+  min-width: 120px;
+  padding: 4px;
+}
+
+#skill-input:focus {
+  outline: none;
+}
+
+/* Footer & Actions */
+.form-footer {
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* We can remove the redundant .btn-primary definition here since it's covered above */
+.primary-btn {
+  width: 280px;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.primary-btn:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.primary-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.primary-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.ghost-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  border-top-color: var(--color-inverse-text);
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Dialog */
+dialog {
+  margin: auto;
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-content h3 {
+  font-family: 'Lora', serif;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.dialog-content p {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Grid Layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-container {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .main-card {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .form-section {
+    padding: 32px 24px;
+  }
+  
+  .section-label {
+    display: none;
+  }
+  
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .primary-btn {
+    width: 100%;
+  }
+  
+  #lang-toggle {
+    top: 12px;
+    right: 12px;
+  }
+}
