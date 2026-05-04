@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 const modernTemplate = require('../templates/modern');
 const classicTemplate = require('../templates/classic');
 
@@ -7,19 +8,17 @@ exports.createPDF = async (data) => {
   try {
     const isRender = process.env.RENDER === 'true' || process.env.PUPPETEER_CACHE_DIR;
     
-    console.log('[PDF SERVICE] Launching browser...', { isRender });
+    console.log('[PDF SERVICE] Launching browser with sparticuz/chromium...', { isRender });
     
-    browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-      ],
-      // Explicitly handle executable path for Render if needed
-      executablePath: isRender ? undefined : undefined, // Standard puppeteer usually finds it if env vars are correct
-    });
+    // Configure chromium for Render/Serverless environments
+    const options = {
+      args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+    };
+
+    browser = await puppeteer.launch(options);
 
     console.log('[PDF SERVICE] Browser launched successfully');
     const page = await browser.newPage();
@@ -47,9 +46,7 @@ exports.createPDF = async (data) => {
     return pdfBuffer;
   } catch (error) {
     console.error('[PDF SERVICE] CRITICAL ERROR:', error.message);
-    if (error.message.includes('Could not find Chrome')) {
-      console.error('[PDF SERVICE] HINT: Ensure PUPPETEER_CACHE_DIR is set and build script ran correctly.');
-    }
+    console.error('[PDF SERVICE] Stack:', error.stack);
     throw error;
   } finally {
     if (browser) {
