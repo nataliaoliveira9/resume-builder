@@ -13,7 +13,6 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "chrome-aws-lambda": "^10.1.0",
     "cors": "^2.8.6",
     "dompurify": "^3.4.1",
     "dotenv": "^17.4.2",
